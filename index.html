@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Vintage Kitchen — Recipe Journal Menu</title>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  GOOGLE FONTS — Vintage Book Style                               ║
+  ║                                                                  ║
+  ║  Playfair Display → Elegant book titles                          ║
+  ║  Dancing Script   → Handwritten signature                        ║
+  ║  Crimson Text     → Old book body text                           ║
+  ║  Special Elite    → Typewriter feel                              ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CSS VARIABLES — Vintage Book Theme                              ║
+  ║                                                                  ║
+  ║  🔄 TO CUSTOMIZE:                                                ║
+  ║  - Change --paper for paper color                                ║
+  ║  - Change --ink for text color                                   ║
+  ║  - Change --accent for gold/burgundy accent                      ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+:root {
+  --paper:         #f4ecd8;          /* Aged cream paper */
+  --paper-dark:    #e8dcc0;          /* Darker shadow */
+  --paper-edge:    #d4c4a0;          /* Page edges */
+  --ink:           #3d2817;          /* Dark brown ink */
+  --ink-soft:      #5c4530;          /* Soft ink */
+  --ink-faded:     #8b7355;          /* Faded text */
+  --accent:        #8b0000;          /* Burgundy red */
+  --accent-2:      #b8860b;          /* Dark gold */
+  --gold:          #c9a961;          /* Vintage gold */
+  --leather:       #4a2c1a;          /* Book cover */
+  --success:       #2d5016;          /* Vintage green */
+  --shadow:        rgba(61, 40, 23, 0.3);
+  --radius-md:     4px;
+  --transition:    all 0.3s ease;
+}
+
+/* ━━━━━━━━━━━━━━━━━━ RESET & BASE ━━━━━━━━━━━━━━━━━━ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Text', serif;
+  background: 
+    radial-gradient(ellipse at center, #2a1810 0%, #1a0e08 100%);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--leather); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; border: 2px solid var(--leather); }
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  PAPER TEXTURE — SVG Background                                  ║
+  ║                                                                  ║
+  ║  Creates aged paper effect with subtle stains                    ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.paper-bg {
+  background-color: var(--paper);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(139, 90, 43, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(139, 90, 43, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(101, 67, 33, 0.04) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  BOOK CONTAINER — Main wrapper                                   ║
+  ║                                                                  ║
+  ║  Looks like an open old book with leather cover edges            ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.book {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--paper);
+  position: relative;
+  box-shadow: 
+    0 0 80px rgba(0,0,0,0.6),
+    inset 0 0 100px rgba(139, 90, 43, 0.15);
+  border-radius: 8px;
+}
+
+/* Book spine effect on left */
+.book::before {
+  content: '';
+  position: absolute;
+  left: -8px; top: 0; bottom: 0;
+  width: 16px;
+  background: linear-gradient(90deg, var(--leather), #2a1810);
+  border-radius: 4px 0 0 4px;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.5);
+}
+
+/* Subtle page edges */
+.book::after {
+  content: '';
+  position: absolute;
+  right: -3px; top: 4px; bottom: 4px;
+  width: 6px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--paper-edge) 0px,
+    var(--paper) 2px,
+    var(--paper-edge) 3px
+  );
+  border-radius: 0 4px 4px 0;
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CART ICON — Vintage Bookmark Ribbon Style                       ║
+  ║                                                                  ║
+  ║  Looks like a red ribbon bookmark hanging from the book          ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+#cart-icon {
+  position: fixed;
+  top: 0; right: 60px;
+  width: 60px; height: 110px;
+  background: linear-gradient(180deg, var(--accent) 0%, #6b0000 100%);
+  cursor: pointer;
+  z-index: 999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding-top: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  transition: var(--transition);
+  /* Ribbon notch at bottom */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+#cart-icon:hover { 
+  transform: translateY(8px); 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+#cart-icon svg { width: 26px; height: 26px; color: var(--gold); margin-bottom: 4px; }
+#cart-icon .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#cart-badge {
+  position: absolute;
+  top: 10px; right: 6px;
+  min-width: 22px; height: 22px;
+  background: var(--gold);
+  color: var(--leather);
+  font-size: 12px; font-weight: 700;
+  font-family: 'Special Elite', monospace;
+  border-radius: 50%;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 0 5px;
+  border: 2px solid var(--accent);
+}
+#cart-badge.show { display: flex; }
+
+@keyframes ribbonSwing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+#cart-icon.pulse { animation: ribbonSwing 0.5s ease; }
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  BOOK COVER PAGE (Hero)                                          ║
+  ║                                                                  ║
+  ║  First page like an old recipe journal cover                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.cover {
+  padding: 80px 60px 60px;
+  text-align: center;
+  border-bottom: 3px double var(--ink-faded);
+  position: relative;
+}
+
+.cover-ornament {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: var(--accent);
+  margin-bottom: 20px;
+  letter-spacing: 8px;
+}
+.cover-since {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--ink-faded);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.cover-title-2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+.cover-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-soft);
+  max-width: 500px;
+  margin: 0 auto 30px;
+}
+.cover-divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px;
+  margin: 30px 0;
+}
+.cover-divider .line {
+  height: 1px;
+  background: var(--ink-faded);
+  flex: 1;
+  max-width: 100px;
+}
+.cover-divider .ornament {
+  color: var(--accent);
+  font-size: 20px;
+}
+.cover-info {
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--ink-faded);
+  margin-top: 20px;
+  line-height: 2;
+}
+.cover-info .phone {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Decorative corners */
+.corner {
+  position: absolute;
+  width: 60px; height: 60px;
+  border: 2px solid var(--accent);
+  opacity: 0.6;
+}
+.corner.tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+.corner.tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+.corner.bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+.corner.br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  TABLE OF CONTENTS                                               ║
+  ║                                                                  ║
+  ║  Old book style index page                                       ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.toc {
+  padding: 50px 60px;
+  border-bottom: 2px dashed var(--ink-faded);
+}
+.toc-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 30px;
+}
+.toc-title::before, .toc-title::after { content: '✦'; color: var(--accent); margin: 0 15px; }
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px 30px;
+}
+.toc-item {
+  display: flex; align-items: baseline;
+  gap: 6px;
+  font-family: 'Crimson Text', serif;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.toc-item:hover { color: var(--accent); }
+.toc-item .num {
+  font-family: 'Special Elite', monospace;
+  color: var(--accent);
+  font-size: 13px;
+}
+.toc-item .name { font-weight: 600; }
+.toc-item .dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--ink-faded);
+  margin: 0 4px 5px;
+}
+.toc-item .page {
+  font-family: 'Special Elite', monospace;
+  color: var(--ink-faded);
+  font-size: 12px;
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CATEGORY (Chapter)                                              ║
+  ║                                                                  ║
+  ║  Each category styled like a book chapter                        ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.chapter {
+  padding: 60px;
+  border-bottom: 1px solid var(--ink-faded);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.chapter.visible { opacity: 1; transform: translateY(0); }
+.chapter:last-child { border-bottom: none; }
+
+.chapter-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.chapter-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+.chapter-subtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.chapter-divider {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 16px;
+  color: var(--accent-2);
+}
+.chapter-divider::before, .chapter-divider::after {
+  content: '';
+  width: 50px;
+  height: 1px;
+  background: var(--ink-faded);
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  RECIPE ITEMS GRID                                               ║
+  ║                                                                  ║
+  ║  Each food item styled like a recipe page entry                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 40px 50px;
+}
+
+.recipe {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 1px dotted var(--ink-faded);
+  position: relative;
+}
+
+.recipe-image {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--paper);
+  outline: 2px solid var(--accent);
+  box-shadow: 
+    0 4px 15px rgba(61, 40, 23, 0.4),
+    inset 0 0 0 1px var(--gold);
+  background: var(--paper-dark);
+  filter: sepia(0.2) contrast(1.05);
+  transition: var(--transition);
+}
+.recipe-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.recipe:hover .recipe-image { 
+  transform: rotate(-3deg) scale(1.05);
+  filter: sepia(0) contrast(1);
+}
+.recipe:hover .recipe-image img { transform: scale(1.1); }
+
+.recipe-content { min-width: 0; }
+
+.recipe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed var(--ink-faded);
+  padding-bottom: 4px;
+}
+.recipe-number {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.recipe-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+  flex: 1;
+  margin-top: 2px;
+}
+.recipe-price {
+  font-family: 'Special Elite', monospace;
+  font-size: 16px;
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.recipe-desc {
+  font-family: 'Crimson Text', serif;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  margin-bottom: 12px;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center; gap: 8px;
+  padding: 8px 18px;
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  border-radius: 0;
+  cursor: pointer;
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: var(--transition);
+  position: relative;
+}
+.add-btn::before, .add-btn::after {
+  content: '✦';
+  font-size: 10px;
+  color: var(--accent);
+}
+.add-btn:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+.add-btn:hover::before, .add-btn:hover::after {
+  color: var(--paper);
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CONTACT (About Us) — Vintage Postcard Style                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.contact-card {
+  background: var(--paper-dark);
+  border: 2px solid var(--ink-faded);
+  padding: 28px 20px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--ink-faded);
+  pointer-events: none;
+}
+.contact-card:hover {
+  background: var(--paper);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.contact-icon {
+  font-size: 36px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.contact-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.contact-text {
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 1px;
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  MODAL OVERLAY (Cart & Order)                                    ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(20, 12, 8, 0.92);
+  z-index: 1000;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+
+.modal-box {
+  background: var(--paper);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(139, 90, 43, 0.08) 0%, transparent 40%);
+  border: 3px double var(--accent);
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+.modal-box::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed var(--ink-faded);
+  pointer-events: none;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed var(--ink-faded);
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--ink);
+}
+.modal-subtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-size: 30px;
+  cursor: pointer;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  z-index: 2;
+}
+.close-btn:hover { color: var(--accent); }
+
+/* Cart items */
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px dotted var(--ink-faded);
+  align-items: center;
+}
+.cart-item-name { 
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 600; 
+  font-size: 16px; 
+  color: var(--ink);
+}
+.cart-item-price { 
+  font-family: 'Special Elite', monospace;
+  font-size: 12px; 
+  color: var(--ink-soft); 
+  margin-top: 2px; 
+}
+.cart-item-controls {
+  display: flex; align-items: center; gap: 8px;
+}
+.qty-btn {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 700;
+  font-family: 'Special Elite', monospace;
+  transition: var(--transition);
+}
+.qty-btn:hover { background: var(--accent); color: var(--paper); }
+.qty-display { 
+  min-width: 24px; 
+  text-align: center; 
+  font-weight: 600;
+  font-family: 'Special Elite', monospace;
+}
+.remove-btn {
+  background: transparent; border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 6px;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 40px 20px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.cart-empty .icon { font-size: 48px; margin-bottom: 10px; }
+
+.cart-total {
+  display: flex; justify-content: space-between;
+  padding: 14px 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  border-top: 2px double var(--ink);
+  margin-top: 14px;
+}
+.cart-total span:last-child { color: var(--accent); font-family: 'Special Elite', monospace; }
+
+/* Proceed button */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: var(--paper);
+  border: 2px solid var(--accent);
+  font-family: 'Special Elite', monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: var(--transition);
+}
+.btn-primary:hover {
+  background: var(--leather);
+  border-color: var(--leather);
+}
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ORDER TYPE SELECTOR (NEW FEATURE!)                              ║
+  ║                                                                  ║
+  ║  Dine-In vs Delivery choice                                      ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.order-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+.order-type-card {
+  padding: 24px 16px;
+  background: var(--paper-dark);
+  border: 2px solid var(--ink-faded);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+.order-type-card::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--ink-faded);
+  pointer-events: none;
+}
+.order-type-card:hover {
+  border-color: var(--accent);
+  background: var(--paper);
+  transform: translateY(-4px);
+}
+.order-type-card .icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+  display: block;
+}
+.order-type-card .label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  font-weight: 700;
+}
+.order-type-card .sub {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  color: var(--ink-faded);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  FORM STYLES                                                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block;
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--ink-faded);
+  color: var(--ink);
+  font-family: 'Crimson Text', serif;
+  font-size: 15px;
+  transition: var(--transition);
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+.form-group textarea { resize: vertical; min-height: 60px; }
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  margin-bottom: 14px;
+  text-decoration: underline;
+}
+.back-btn:hover { color: var(--accent); }
+
+/* Map button */
+.map-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--paper-dark);
+  border: 1.5px dashed var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 6px;
+  transition: var(--transition);
+}
+.map-btn:hover { background: var(--accent); color: var(--paper); }
+.location-status {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: var(--success);
+  margin-top: 6px;
+  display: none;
+}
+.location-status.show { display: block; }
+
+/* WhatsApp button */
+.whatsapp-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--success);
+  color: var(--paper);
+  border: 2px solid var(--success);
+  font-family: 'Special Elite', monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.whatsapp-btn:hover {
+  background: #1d3a0e;
+  border-color: #1d3a0e;
+}
+
+/* Map modal */
+.map-modal-box {
+  max-width: 600px;
+  padding: 20px;
+}
+#mapFrame {
+  width: 100%;
+  height: 350px;
+  border: 2px solid var(--ink-faded);
+  margin: 16px 0;
+  filter: sepia(0.3);
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  TOAST NOTIFICATION                                              ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.toast {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 24px;
+  font-family: 'Special Elite', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border: 2px solid var(--gold);
+  z-index: 1100;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  FOOTER (Back cover of book)                                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+.back-cover {
+  padding: 50px 60px;
+  text-align: center;
+  background: var(--paper-dark);
+  border-top: 3px double var(--ink);
+}
+.back-cover .ornament {
+  font-size: 28px;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.back-cover .signature {
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.back-cover .copyright {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: var(--ink-faded);
+  letter-spacing: 2px;
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  RESPONSIVE DESIGN                                               ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+@media (max-width: 768px) {
+  body { padding: 20px 10px; }
+  .cover, .toc, .chapter, .back-cover { padding: 40px 25px; }
+  .recipes { grid-template-columns: 1fr; gap: 30px; }
+  .recipe { grid-template-columns: 90px 1fr; gap: 14px; }
+  .recipe-image { width: 90px; height: 90px; }
+  .recipe-name { font-size: 17px; }
+  .recipe-price { font-size: 14px; }
+  .recipe-desc { font-size: 13.5px; -webkit-line-clamp: 3; }
+  .modal-box { padding: 24px 18px; }
+  #cart-icon { right: 20px; width: 50px; height: 90px; }
+  .corner { width: 40px; height: 40px; }
+}
+@media (max-width: 480px) {
+  .cover-title { font-size: 2.2rem; }
+  .chapter-title { font-size: 1.8rem; }
+  .recipe { grid-template-columns: 75px 1fr; gap: 10px; }
+  .recipe-image { width: 75px; height: 75px; }
+  .recipe-name { font-size: 16px; }
+  .order-type-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body class="paper-bg">
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CART ICON — Bookmark Ribbon                                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div id="cart-icon" onclick="openCart()" aria-label="Open cart" role="button" tabindex="0">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 6h-2c0-2.8-2.2-5-5-5S7 3.2 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM12 3c1.7 0 3 1.3 3 3H9c0-1.7 1.3-3 3-3z"/>
+  </svg>
+  <span class="label">Cart</span>
+  <span id="cart-badge">0</span>
+</div>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  THE BOOK                                                        ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div class="book">
+
+  <!-- ━━━━━━ BOOK COVER PAGE ━━━━━━ -->
+  <div class="cover">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="cover-ornament">❦ ❦ ❦</div>
+    <div class="cover-since">Established Anno 1947</div>
+    <h1 class="cover-title">The Vintage</h1>
+    <h2 class="cover-title-2">Kitchen</h2>
+    <p class="cover-subtitle">A Curated Collection of Time-Honored Recipes & Modern Delights</p>
+    
+    <div class="cover-divider">
+      <span class="line"></span>
+      <span class="ornament">✦</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="cover-info">
+      ~ Recipe Journal ~<br>
+      <span class="phone">+92 300 1234567</span><br>
+      Main Boulevard, Lahore
+    </div>
+  </div>
+
+  <!-- ━━━━━━ TABLE OF CONTENTS (auto-generated) ━━━━━━ -->
+  <div class="toc">
+    <h3 class="toc-title">Table of Contents</h3>
+    <div class="toc-grid" id="tocGrid"></div>
+  </div>
+
+  <!-- ━━━━━━ CHAPTERS (Categories — auto-generated) ━━━━━━ -->
+  <main id="bookContent"></main>
+
+  <!-- ━━━━━━ BACK COVER ━━━━━━ -->
+  <div class="back-cover">
+    <div class="ornament">❦ ✦ ❦</div>
+    <div class="signature">~ Thank you for dining with us ~</div>
+    <div class="copyright">© MMXXV · The Vintage Kitchen · All Rights Reserved</div>
+  </div>
+
+</div>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CART MODAL                                                      ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div class="modal-overlay" id="cartModal" onclick="if(event.target===this)closeCart()">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeCart()" aria-label="Close">✕</button>
+    <div class="modal-header">
+      <div class="modal-title">Your Order</div>
+      <div class="modal-subtitle">~ A selection of fine choices ~</div>
+    </div>
+    <div id="cartBody"></div>
+    <div id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">Rs. 0</span>
+      </div>
+      <button class="btn-primary" onclick="proceedToOrderType()">Proceed to Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ORDER TYPE MODAL — NEW FEATURE!                                 ║
+  ║  Customer chooses Dine-In or Delivery                            ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div class="modal-overlay" id="orderTypeModal" onclick="if(event.target===this)closeOrderType()">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeOrderType()" aria-label="Close">✕</button>
+    <div class="modal-header">
+      <div class="modal-title">How shall we serve you?</div>
+      <div class="modal-subtitle">~ Choose your preference ~</div>
+    </div>
+    <div class="order-type-grid">
+      <div class="order-type-card" onclick="openOrderForm('dinein')">
+        <span class="icon">🪑</span>
+        <div class="label">Dine-In</div>
+        <div class="sub">At the restaurant</div>
+      </div>
+      <div class="order-type-card" onclick="openOrderForm('delivery')">
+        <span class="icon">🏠</span>
+        <div class="label">Delivery</div>
+        <div class="sub">To your home</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ORDER FORM MODAL — Dynamic (Dine-In OR Delivery)                ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div class="modal-overlay" id="orderFormModal" onclick="if(event.target===this)closeOrderForm()">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeOrderForm()" aria-label="Close">✕</button>
+    <button class="back-btn" onclick="backToOrderType()">← Change order type</button>
+    <div class="modal-header">
+      <div class="modal-title" id="orderFormTitle">Order Details</div>
+      <div class="modal-subtitle" id="orderFormSubtitle">~ Please share your information ~</div>
+    </div>
+    <div id="orderFormBody"></div>
+    <div class="cart-total">
+      <span>Total:</span>
+      <span id="finalTotal">Rs. 0</span>
+    </div>
+    <button class="whatsapp-btn" onclick="sendWhatsApp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24z"/>
+      </svg>
+      Send Order on WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  MAP MODAL — Location Picker                                     ║
+  ║  Uses OpenStreetMap (FREE, no API key needed!)                   ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<div class="modal-overlay" id="mapModal" onclick="if(event.target===this)closeMap()">
+  <div class="modal-box map-modal-box">
+    <button class="close-btn" onclick="closeMap()" aria-label="Close">✕</button>
+    <div class="modal-header">
+      <div class="modal-title">Select Your Location</div>
+      <div class="modal-subtitle">~ Pinpoint where to deliver ~</div>
+    </div>
+    <button class="map-btn" onclick="detectLocation()">📍 Use My Current Location</button>
+    <iframe id="mapFrame" src="" loading="lazy"></iframe>
+    <p style="font-family:'Special Elite',monospace;font-size:11px;color:var(--ink-soft);text-align:center;margin-bottom:10px;">
+      Coordinates: <span id="coordsDisplay">Not selected yet</span>
+    </p>
+    <button class="btn-primary" onclick="confirmLocation()">✓ Confirm This Location</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  RESTAURANT CONFIG                                               ║
+  ║  🔄 TO CUSTOMIZE: Change values here                             ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+const RESTAURANT = {
+  name: "The Vintage Kitchen",
+  whatsapp: "923001234567",
+  phone: "+92 300 1234567",
+  address: "Main Boulevard, Lahore, Pakistan",
+  mapsUrl: "https://maps.google.com/?q=Lahore",
+  currency: "Rs."
+};
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  MENU DATA — Same structure as before                            ║
+  ║  🔄 TO CUSTOMIZE: Edit items here                                ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+const menuData = [
+  {
+    name: "Soup",
+    items: [
+      { name: "Chicken Corn Soup", price: 350, desc: "A classic creamy Chinese-style soup loaded with tender shredded chicken and sweet corn kernels. Slow-simmered in a rich chicken broth and finished with a silky egg drop swirl.", img: "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80" },
+      { name: "Hot & Sour Soup", price: 380, desc: "A bold, tangy, and spicy Asian-inspired soup with shredded chicken, mushrooms, and fresh vegetables. Balanced with vinegar, soy sauce, and chili oil for that authentic flavor punch.", img: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=400&q=80" },
+      { name: "Mushroom Soup", price: 400, desc: "A luxuriously rich and velvety cream of mushroom soup made with hand-picked button and portobello mushrooms. Finished with a swirl of fresh cream and a hint of garlic.", img: "https://images.unsplash.com/photo-1605709303005-4d4d2c5b1f0e?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Starters",
+    items: [
+      { name: "Chicken Wings", price: 650, desc: "Juicy, crispy chicken wings double-fried to golden perfection and tossed in our signature spicy buffalo sauce. Served with creamy ranch dip and crunchy celery sticks.", img: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80" },
+      { name: "Chicken Nuggets", price: 550, desc: "Tender bite-sized chicken pieces coated in a crispy seasoned breading and deep-fried golden brown. Served with a choice of three dipping sauces.", img: "https://images.unsplash.com/photo-1562967914-608f82629710?w=400&q=80" },
+      { name: "Spring Rolls", price: 450, desc: "Crispy, golden Asian-style spring rolls stuffed with fresh cabbage, carrots, bean sprouts, and vermicelli noodles. Pan-fried to a perfect crunch.", img: "https://images.unsplash.com/photo-1606503153255-59d8b8b8b89e?w=400&q=80" },
+      { name: "Chicken Lollipop", price: 700, desc: "Marinated chicken drummettes shaped like lollipops and deep-fried until crisp. Tossed in a spicy Indo-Chinese schezwan glaze. Served with mint chutney.", img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f3e?w=400&q=80" }
+    ]
+  },
+  {
+    name: "SeaFood",
+    items: [
+      { name: "Grilled Fish", price: 1200, desc: "Fresh catch of the day marinated in lemon, garlic, and Mediterranean herbs, then grilled over an open flame. Served with steamed seasonal vegetables.", img: "https://images.unsplash.com/photo-1535399831218-d4e7a51b1f7e?w=400&q=80" },
+      { name: "Prawn Tempura", price: 1100, desc: "Plump jumbo prawns coated in a light, airy Japanese tempura batter and flash-fried to crispy perfection. Served with tangy soy ginger dipping sauce.", img: "https://images.unsplash.com/photo-1625944526647-c39d29c80aff?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Fries",
+    items: [
+      { name: "Classic Fries", price: 250, desc: "Hand-cut Idaho potatoes fried twice for the perfect golden crisp exterior and fluffy interior. Lightly salted and served hot with signature dips.", img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80" },
+      { name: "Cheese Fries", price: 350, desc: "Our classic crispy fries smothered in a generous layer of melted cheddar and mozzarella cheese sauce. Topped with chopped parsley.", img: "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&q=80" },
+      { name: "Loaded Fries", price: 450, desc: "A mountain of golden fries loaded with shredded chicken, melted cheese, jalapeños, sour cream, and tangy salsa. A meal in itself.", img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80" },
+      { name: "Peri Peri Fries", price: 320, desc: "Crispy fries generously coated in our house-blend peri peri seasoning, delivering a bold smoky African heat. Served with cooling garlic mayo.", img: "https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=80" },
+      { name: "Curly Fries", price: 320, desc: "Fun spiral-cut potato fries seasoned with our signature spice blend featuring paprika, garlic, and onion powder. Extra crunchy in every twist.", img: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80" },
+      { name: "Sweet Potato Fries", price: 380, desc: "Thick-cut sweet potato wedges baked until tender inside and crisp outside. Naturally sweet with a hint of sea salt and rosemary.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&q=80" },
+      { name: "Garlic Fries", price: 340, desc: "Golden fries tossed in melted garlic butter and showered with freshly chopped parsley and parmesan cheese. Aromatic and absolutely irresistible.", img: "https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=400&q=80" },
+      { name: "BBQ Fries", price: 380, desc: "Crispy fries dusted with smoky barbecue seasoning and drizzled with tangy BBQ sauce. Topped with crispy onion strings for extra crunch.", img: "https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Poultry",
+    items: [
+      { name: "Grilled Chicken", price: 950, desc: "A boneless chicken breast marinated overnight in herbs, olive oil, and lemon, then grilled to juicy perfection. Served with mashed potatoes.", img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&q=80" },
+      { name: "Chicken Steak", price: 1100, desc: "Tender butterflied chicken breast pan-seared and topped with a creamy mushroom sauce. Served with buttery mashed potatoes and sautéed vegetables.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Wrap",
+    items: [
+      { name: "Chicken Wrap", price: 550, desc: "Tender grilled chicken strips, fresh lettuce, juicy tomatoes, and creamy mayo wrapped in a warm tortilla. Served with seasoned fries.", img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400&q=80" },
+      { name: "Beef Wrap", price: 650, desc: "Spicy marinated beef strips combined with caramelized onions, bell peppers, and chipotle sauce in a soft flour tortilla.", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80" },
+      { name: "Veggie Wrap", price: 450, desc: "A fresh blend of grilled bell peppers, zucchini, mushrooms, and feta cheese wrapped with hummus in a wholewheat tortilla.", img: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Pasta",
+    items: [
+      { name: "Alfredo Pasta", price: 750, desc: "Silky fettuccine pasta tossed in a rich, creamy Alfredo sauce made with butter, fresh cream, and parmesan cheese. Topped with grilled chicken.", img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&q=80" },
+      { name: "Spaghetti Bolognese", price: 800, desc: "Classic al dente spaghetti smothered in a slow-cooked Italian meat sauce made with beef mince, tomatoes, garlic, and aromatic herbs.", img: "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Tea",
+    items: [
+      { name: "Karak Chai", price: 120, desc: "Strong, bold, and richly spiced desi tea brewed with full-fat milk, cardamom, and a hint of saffron. A true taste of South Asian tradition.", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80" },
+      { name: "Green Tea", price: 150, desc: "Premium loose-leaf green tea steeped to perfection, delivering a delicate grassy aroma. Rich in antioxidants and naturally calming.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" },
+      { name: "Masala Chai", price: 180, desc: "Traditional Indian spiced tea brewed with cinnamon, cardamom, cloves, ginger, and black pepper in creamy milk. Warming and aromatic.", img: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&q=80" },
+      { name: "Doodh Patti", price: 150, desc: "Pure milk tea made entirely with full-cream milk — absolutely no water added. Slowly simmered with select tea leaves and a touch of sugar.", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80" },
+      { name: "Lemon Tea", price: 140, desc: "Refreshing hot black tea infused with freshly squeezed lemon juice and a hint of honey. Light, tangy, and rejuvenating.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" },
+      { name: "Ginger Tea", price: 160, desc: "Soothing tea brewed with fresh ginger root, black tea leaves, and milk. Naturally warming, immunity-boosting, and perfect for cold weather.", img: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Sandwiches",
+    items: [
+      { name: "Club Sandwich", price: 550, desc: "A towering triple-decker sandwich layered with grilled chicken, crispy bacon, fresh lettuce, tomatoes, cheese, and mayo on toasted bread.", img: "https://images.unsplash.com/photo-1567234669003-dce7a7a88821?w=400&q=80" },
+      { name: "Grilled Cheese", price: 400, desc: "A buttery toasted sandwich oozing with three types of melted cheese — cheddar, mozzarella, and parmesan. Pure cheesy comfort.", img: "https://images.unsplash.com/photo-1528736235302-52922df5c122?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Ice Cream Shakes",
+    items: [
+      { name: "Chocolate Shake", price: 350, desc: "Rich Belgian chocolate ice cream blended with cold milk and topped with whipped cream, chocolate sauce, and chocolate shavings.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80" },
+      { name: "Vanilla Shake", price: 320, desc: "Classic Madagascar vanilla bean ice cream blended into a smooth, creamy milkshake. Topped with whipped cream and a cherry.", img: "https://images.unsplash.com/photo-1638176067000-9e8a1c1bd64f?w=400&q=80" },
+      { name: "Strawberry Shake", price: 350, desc: "Fresh strawberries blended with creamy vanilla ice cream and cold milk for that perfect pink delight. Fruity and dreamy.", img: "https://images.unsplash.com/photo-1553787499-6f9133860278?w=400&q=80" },
+      { name: "Oreo Shake", price: 400, desc: "Crushed Oreo cookies blended with vanilla ice cream and milk, creating the ultimate cookies and cream shake. A nostalgic favorite.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80" },
+      { name: "Mango Shake", price: 380, desc: "Fresh Pakistani Chaunsa mango pulp blended with creamy vanilla ice cream and cold milk. Topped with mango chunks.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Vintage Special",
+    items: [
+      { name: "Signature Mocktail", price: 450, desc: "Our chef's secret signature creation — a vibrant blend of tropical fruits, fresh berries, and a hint of mint. Served over crushed ice.", img: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" },
+      { name: "Tropical Sunset", price: 420, desc: "A stunning layered drink combining orange, pineapple, and grenadine to create a beautiful sunset gradient. Tastes amazing.", img: "https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&q=80" },
+      { name: "Berry Blast", price: 450, desc: "An explosion of mixed berries — strawberries, blueberries, and raspberries — blended with cranberry juice and a splash of soda.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" },
+      { name: "Mint Mojito", price: 380, desc: "A refreshing virgin mojito made with fresh mint leaves, zesty lime, sugar, and topped with sparkling soda water.", img: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&q=80" },
+      { name: "Passion Punch", price: 450, desc: "Exotic passion fruit blended with orange juice and a hint of ginger. Topped with sparkling water and fresh mint.", img: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80" },
+      { name: "Watermelon Cooler", price: 400, desc: "Fresh watermelon juice blended with mint, lime, and a touch of sugar over crushed ice. Pure summer in a glass.", img: "https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=400&q=80" },
+      { name: "Pina Colada", price: 480, desc: "A tropical virgin blend of fresh pineapple juice and creamy coconut milk, blended with ice into a frothy paradise.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" },
+      { name: "Blue Lagoon", price: 450, desc: "A stunning electric blue mocktail made with blue curacao syrup, lemonade, and a splash of soda. Visually striking.", img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80" },
+      { name: "Strawberry Daiquiri", price: 450, desc: "Fresh strawberries blended with lime juice, sugar, and crushed ice into a frosty pink delight. The ultimate refresher.", img: "https://images.unsplash.com/photo-1553787499-6f9133860278?w=400&q=80" },
+      { name: "Mango Tango", price: 480, desc: "Juicy mango pulp combined with orange juice, lime, and a hint of chili powder for that tangy twist.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" },
+      { name: "Citrus Splash", price: 420, desc: "A zesty mix of fresh orange, lemon, lime, and grapefruit juices with a hint of honey. Topped with sparkling water.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" },
+      { name: "Kiwi Crush", price: 450, desc: "Fresh kiwi fruit blended with apple juice, lime, and mint leaves. Topped with crushed ice and a kiwi slice.", img: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80" },
+      { name: "Lychee Lush", price: 480, desc: "Premium lychee fruit blended with rose syrup, lime juice, and topped with soda water. Aromatic and floral.", img: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" },
+      { name: "Pomegranate Fizz", price: 450, desc: "Fresh pomegranate juice mixed with lime, mint, and sparkling water. Garnished with pomegranate seeds.", img: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80" },
+      { name: "Coconut Breeze", price: 480, desc: "Creamy coconut milk blended with pineapple juice, banana, and crushed ice. Topped with toasted coconut flakes.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Panini",
+    items: [
+      { name: "Chicken Panini", price: 600, desc: "Grilled chicken, sundried tomatoes, mozzarella cheese, and basil pesto pressed between ciabatta bread. Italian-inspired comfort.", img: "https://images.unsplash.com/photo-1539252554935-80c8cabf1a2b?w=400&q=80" },
+      { name: "Veggie Panini", price: 500, desc: "Grilled zucchini, eggplant, bell peppers, and fresh mozzarella with basil pesto on rustic ciabatta. A vegetarian's delight.", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Kehwa",
+    items: [
+      { name: "Kashmiri Kehwa", price: 220, desc: "Traditional Kashmiri green tea infused with saffron, cardamom, cinnamon, and crushed almonds. A royal beverage.", img: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&q=80" },
+      { name: "Honey Kehwa", price: 250, desc: "Our signature Kashmiri kehwa sweetened with pure organic honey instead of sugar. Garnished with crushed almonds.", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Ice Tea",
+    items: [
+      { name: "Lemon Ice Tea", price: 280, desc: "Freshly brewed black tea chilled over ice and infused with zesty lemon juice and a hint of honey.", img: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80" },
+      { name: "Peach Ice Tea", price: 320, desc: "Smooth iced tea infused with sweet ripe peach syrup and a splash of lemon. Served over ice with fresh peach slices.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" },
+      { name: "Mango Ice Tea", price: 320, desc: "Tropical mango pulp blended into chilled black tea with a touch of lime. A perfect summer drink.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Desserts",
+    items: [
+      { name: "Chocolate Brownie", price: 380, desc: "Warm fudgy chocolate brownie served with a scoop of vanilla ice cream and drizzled with hot chocolate sauce.", img: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=400&q=80" },
+      { name: "Cheesecake", price: 450, desc: "Classic New York-style cheesecake with a buttery graham cracker crust and silky smooth cream cheese filling.", img: "https://images.unsplash.com/photo-1567171466295-4afa63d45416?w=400&q=80" },
+      { name: "Tiramisu", price: 500, desc: "Authentic Italian dessert layered with espresso-soaked ladyfingers, mascarpone cream, and dusted with cocoa powder.", img: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&q=80" }
+    ]
+  },
+  {
+    name: "House Special",
+    items: [
+      { name: "Royal Platter", price: 1850, desc: "Our signature mixed grill platter perfect for two — chicken tikka, seekh kabab, malai boti, beef bihari, and grilled wings.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80" },
+      { name: "Chef's Special Steak", price: 1650, desc: "Premium grain-fed beef tenderloin cooked to your preference and served with mushroom sauce and mashed potatoes.", img: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=400&q=80" },
+      { name: "Royal Biryani", price: 950, desc: "Aromatic basmati rice slow-cooked with tender chicken pieces, saffron, fried onions, and traditional spices.", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80" },
+      { name: "Mutton Karahi", price: 1850, desc: "Tender mutton pieces slow-cooked in a wok with fresh tomatoes, ginger, garlic, green chilies, and aromatic spices.", img: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=80" },
+      { name: "Chicken Handi", price: 1450, desc: "Boneless chicken cooked in a rich, creamy gravy with yogurt, cashews, and aromatic spices in a traditional clay handi.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Beef Nihari", price: 1250, desc: "Slow-cooked overnight beef stew infused with traditional spices, ginger, and aromatic herbs. Served with naan.", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&q=80" },
+      { name: "Special Pulao", price: 850, desc: "Fragrant basmati rice cooked with tender chicken in a flavorful broth of whole spices, fried onions, and ghee.", img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&q=80" },
+      { name: "Tikka Boti", price: 1100, desc: "Boneless chicken or beef chunks marinated in yogurt and aromatic spices, then grilled over charcoal.", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&q=80" }
+    ]
+  },
+  {
+    name: "BBQ",
+    items: [
+      { name: "Chicken Tikka", price: 550, desc: "Bone-in chicken pieces marinated in yogurt, ginger, garlic, and red chili spices, then grilled over hot charcoal.", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80" },
+      { name: "Seekh Kabab", price: 500, desc: "Spiced minced beef hand-pressed onto skewers and grilled over charcoal until juicy and slightly charred.", img: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&q=80" },
+      { name: "Malai Boti", price: 650, desc: "Boneless chicken chunks marinated in cream, cheese, and mild spices, then grilled to creamy perfection.", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&q=80" },
+      { name: "Beef Bihari Kabab", price: 700, desc: "Thinly sliced marinated beef strips infused with traditional Bihari spices and slow-grilled to tender perfection.", img: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&q=80" },
+      { name: "Mutton Champ", price: 1450, desc: "Premium mutton chops marinated in raw papaya and aromatic spices for hours, then grilled until tender.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80" },
+      { name: "Chicken Reshmi", price: 650, desc: "Boneless chicken marinated in cream, cashew paste, and mild spices, grilled to soft buttery perfection.", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80" },
+      { name: "Fish Tikka", price: 850, desc: "Fresh fish fillets marinated in spices, yogurt, and lemon juice, then grilled until flaky and tender.", img: "https://images.unsplash.com/photo-1535399831218-d4e7a51b1f7e?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Tandoor",
+    items: [
+      { name: "Tandoori Roti", price: 30, desc: "Traditional whole wheat flatbread baked fresh in a clay tandoor oven. Soft inside with crispy charred spots.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Naan", price: 60, desc: "Soft, pillowy white flour naan bread baked to golden perfection in a hot tandoor. Brushed with butter.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Garlic Naan", price: 100, desc: "Fluffy naan topped with fresh minced garlic, chopped coriander, and brushed with melted butter.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Butter Naan", price: 90, desc: "Classic naan generously brushed with melted butter on both sides while still hot from the tandoor.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Cheese Naan", price: 180, desc: "Soft naan stuffed generously with melted mozzarella cheese and baked in the tandoor until golden.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Roghni Naan", price: 80, desc: "Traditional Pakistani naan topped with sesame seeds and brushed with ghee. A regional specialty.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Kulcha", price: 90, desc: "Punjabi-style leavened flatbread baked in tandoor with a fluffy soft interior. Topped with nigella seeds.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Aloo Paratha", price: 150, desc: "Whole wheat flatbread stuffed with spiced mashed potatoes, onions, and herbs, then cooked on a griddle.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" },
+      { name: "Lachha Paratha", price: 120, desc: "Multi-layered flaky paratha made by folding dough multiple times with ghee. Crispy and buttery.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Mocktails",
+    items: [
+      { name: "Virgin Mojito", price: 350, desc: "The classic Cuban favorite made virgin — fresh mint leaves muddled with lime, sugar, and topped with sparkling soda water.", img: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&q=80" },
+      { name: "Strawberry Mojito", price: 380, desc: "A fruity twist on the classic mojito featuring fresh muddled strawberries, mint, lime, and sparkling water.", img: "https://images.unsplash.com/photo-1553787499-6f9133860278?w=400&q=80" },
+      { name: "Mango Mojito", price: 380, desc: "Tropical mango pulp blended with fresh mint, lime juice, and sparkling soda. A sweet refreshing paradise.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" },
+      { name: "Blueberry Mojito", price: 400, desc: "Fresh blueberries muddled with mint leaves, lime juice, and topped with soda water. Antioxidant-rich.", img: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80" },
+      { name: "Lemonade Fresh", price: 280, desc: "Freshly squeezed lemon juice mixed with cold water, sugar, and a hint of mint. Served over ice.", img: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80" },
+      { name: "Cucumber Cooler", price: 320, desc: "Fresh cucumber blended with mint, lime, and a splash of sparkling water. Light and hydrating.", img: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" },
+      { name: "Berry Lemonade", price: 350, desc: "Classic fresh lemonade infused with mixed berry puree — strawberries, raspberries, and blueberries.", img: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Special Drinks",
+    items: [
+      { name: "Cold Coffee", price: 380, desc: "Rich espresso blended with cold milk, sugar, and ice cream into a thick frothy delight. Topped with whipped cream.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80" },
+      { name: "Iced Latte", price: 420, desc: "A double shot of espresso poured over cold milk and ice. Smooth, balanced, and refreshing.", img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80" },
+      { name: "Iced Mocha", price: 450, desc: "Espresso, chocolate syrup, and cold milk combined over ice and topped with whipped cream. Rich and chocolatey.", img: "https://images.unsplash.com/photo-1572286258217-215cf8e09a96?w=400&q=80" },
+      { name: "Frappuccino", price: 480, desc: "Blended ice coffee with milk, sugar, and your choice of flavor — caramel, mocha, or vanilla. Thick and frosty.", img: "https://images.unsplash.com/photo-1572286258217-215cf8e09a96?w=400&q=80" },
+      { name: "Caramel Macchiato", price: 450, desc: "Vanilla-flavored espresso layered with steamed milk and topped with caramel drizzle. Sweet sophistication.", img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80" },
+      { name: "Hot Chocolate", price: 380, desc: "Premium Belgian chocolate melted into steamed milk and topped with whipped cream, marshmallows.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80" },
+      { name: "Espresso", price: 250, desc: "A concentrated shot of pure coffee extracted under high pressure from finely ground premium beans.", img: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400&q=80" },
+      { name: "Cappuccino", price: 350, desc: "Classic Italian coffee with equal parts espresso, steamed milk, and silky foam. Topped with cocoa.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80" },
+      { name: "Latte", price: 380, desc: "Smooth espresso with steamed milk and a thin layer of microfoam. Often topped with beautiful latte art.", img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80" },
+      { name: "Americano", price: 280, desc: "Strong espresso diluted with hot water for a milder, smoother taste. Maintains all the rich coffee flavor.", img: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400&q=80" },
+      { name: "Mocha", price: 420, desc: "Espresso combined with steamed milk and rich chocolate syrup, topped with whipped cream and chocolate shavings.", img: "https://images.unsplash.com/photo-1572286258217-215cf8e09a96?w=400&q=80" },
+      { name: "Affogato", price: 480, desc: "A classic Italian dessert-drink — premium vanilla ice cream 'drowned' in a hot shot of espresso.", img: "https://images.unsplash.com/photo-1572286258217-215cf8e09a96?w=400&q=80" },
+      { name: "Turkish Coffee", price: 450, desc: "Traditional Turkish coffee brewed in a cezve with finely ground beans, sugar, and cardamom.", img: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400&q=80" },
+      { name: "Irish Coffee", price: 500, desc: "Hot coffee sweetened with brown sugar and topped with a thick layer of fresh whipped cream.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80" },
+      { name: "Vienna Coffee", price: 480, desc: "Two shots of strong espresso topped with a generous swirl of whipped cream and a dusting of cocoa.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Margaritas",
+    items: [
+      { name: "Classic Margarita", price: 480, desc: "Virgin version of the classic Mexican favorite — fresh lime juice, simple syrup, and orange juice over crushed ice.", img: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" },
+      { name: "Strawberry Margarita", price: 520, desc: "Fresh strawberries blended with lime juice and simple syrup into a frosty pink slush.", img: "https://images.unsplash.com/photo-1553787499-6f9133860278?w=400&q=80" },
+      { name: "Mango Margarita", price: 520, desc: "Tropical mango pulp blended with fresh lime juice and crushed ice. Sweet meets spicy perfection.", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80" },
+      { name: "Blueberry Margarita", price: 540, desc: "Fresh blueberries muddled with lime juice and blended with crushed ice. Beautifully purple.", img: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80" },
+      { name: "Peach Margarita", price: 520, desc: "Sweet ripe peaches blended with lime juice, simple syrup, and ice into a frosty delight.", img: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Beverages",
+    items: [
+      { name: "Coke", price: 120, desc: "Ice-cold Coca-Cola served in a chilled glass with ice and a slice of lemon. The world's favorite soft drink.", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80" },
+      { name: "Sprite", price: 120, desc: "Refreshing lemon-lime flavored carbonated drink served over ice. Crisp, clean, and caffeine-free.", img: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&q=80" },
+      { name: "Fanta", price: 120, desc: "Vibrant orange-flavored carbonated drink with that signature sweet tangy taste. A fruity classic.", img: "https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?w=400&q=80" },
+      { name: "Mineral Water", price: 80, desc: "Pure mineral water sourced from natural springs, served chilled in a 500ml bottle.", img: "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Classic Pizzas",
+    items: [
+      { name: "Margherita", price: 850, desc: "The classic Italian pizza topped with fresh tomato sauce, mozzarella cheese, and basil leaves on our hand-tossed crust.", img: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=400&q=80" },
+      { name: "Pepperoni", price: 1100, desc: "Generous slices of spicy pepperoni layered over melted mozzarella cheese and rich tomato sauce on a crispy thin crust.", img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80" },
+      { name: "Chicken Tikka Pizza", price: 1200, desc: "Desi-style pizza topped with spicy chicken tikka chunks, onions, bell peppers, and mozzarella cheese.", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" },
+      { name: "BBQ Chicken", price: 1250, desc: "Smoky BBQ sauce base topped with grilled chicken, red onions, bell peppers, and a blend of cheeses.", img: "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&q=80" },
+      { name: "Vegetarian", price: 950, desc: "Loaded with fresh bell peppers, onions, mushrooms, olives, tomatoes, and corn over tomato sauce and mozzarella.", img: "https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&q=80" }
+    ]
+  },
+  {
+    name: "Premium Pizzas",
+    items: [
+      { name: "Meat Lovers", price: 1650, desc: "The ultimate carnivore pizza loaded with pepperoni, sausage, grilled chicken, beef strips, and bacon.", img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80" },
+      { name: "Supreme Pizza", price: 1750, desc: "Our premium loaded pizza featuring pepperoni, sausage, bell peppers, onions, mushrooms, olives, and extra cheese.", img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80" },
+      { name: "4 Cheese Pizza", price: 1550, desc: "Quattro Formaggi — a luxurious pizza featuring mozzarella, cheddar, parmesan, and feta cheese on a creamy white sauce.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80" },
+      { name: "Vintage Special Pizza", price: 1850, desc: "Our signature creation loaded with chicken tikka, malai boti, seekh kabab, bell peppers, onions, and three cheeses.", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" }
+    ]
+  }
+];
+
+/* About cards (auto-added at end) */
+const aboutCards = [
+  { title: "WhatsApp", text: "Chat with us", icon: "💬", link: `https://wa.me/${RESTAURANT.whatsapp}` },
+  { title: "Telephone", text: RESTAURANT.phone, icon: "☎", link: `tel:${RESTAURANT.phone}` },
+  { title: "Our Address", text: RESTAURANT.address, icon: "✉", link: RESTAURANT.mapsUrl }
+];
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  RENDER BOOK — Build all chapters & TOC                          ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+function renderBook() {
+  // Table of Contents
+  let tocHtml = '';
+  menuData.forEach((cat, i) => {
+    tocHtml += `
+      <a href="#chapter-${i}" class="toc-item">
+        <span class="num">${String(i+1).padStart(2,'0')}.</span>
+        <span class="name">${cat.name}</span>
+        <span class="dots"></span>
+        <span class="page">pg. ${(i+1)*2}</span>
+      </a>
+    `;
+  });
+  tocHtml += `
+    <a href="#contact" class="toc-item">
+      <span class="num">${String(menuData.length+1).padStart(2,'0')}.</span>
+      <span class="name">Contact Us</span>
+      <span class="dots"></span>
+      <span class="page">pg. ∞</span>
+    </a>
+  `;
+  document.getElementById('tocGrid').innerHTML = tocHtml;
+
+  // Chapters
+  let bookHtml = '';
+  menuData.forEach((cat, ci) => {
+    bookHtml += `
+      <section class="chapter" id="chapter-${ci}">
+        <div class="chapter-header">
+          <div class="chapter-label">Chapter ${String(ci+1).padStart(2,'0')}</div>
+          <h2 class="chapter-title">${cat.name}</h2>
+          <div class="chapter-subtitle">~ A timeless collection ~</div>
+          <div class="chapter-divider">❦</div>
+        </div>
+        <div class="recipes">
+          ${cat.items.map((item, ii) => `
+            <div class="recipe">
+              <div class="recipe-image">
+                <img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/200/d4c4a0/3d2817?text=♨'">
+              </div>
+              <div class="recipe-content">
+                <div class="recipe-header">
+                  <span class="recipe-number">№ ${String(ii+1).padStart(2,'0')}</span>
+                  <span class="recipe-name">${item.name}</span>
+                  <span class="recipe-price">${RESTAURANT.currency} ${item.price}</span>
+                </div>
+                <p class="recipe-desc">${item.desc}</p>
+                <button class="add-btn" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})">
+                  Add to Order
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  });
+
+  // Contact chapter
+  bookHtml += `
+    <section class="chapter" id="contact">
+      <div class="chapter-header">
+        <div class="chapter-label">Epilogue</div>
+        <h2 class="chapter-title">Find Us</h2>
+        <div class="chapter-subtitle">~ Stay in touch ~</div>
+        <div class="chapter-divider">❦</div>
+      </div>
+      <div class="contact-grid">
+        ${aboutCards.map(c => `
+          <a href="${c.link}" target="_blank" class="contact-card">
+            <div class="contact-icon">${c.icon}</div>
+            <div class="contact-title">${c.title}</div>
+            <div class="contact-text">${c.text}</div>
+          </a>
+        `).join('')}
+      </div>
+    </section>
+  `;
+
+  document.getElementById('bookContent').innerHTML = bookHtml;
+  observeChapters();
+}
+
+/* Intersection Observer for fade-in */
+function observeChapters() {
+  const chapters = document.querySelectorAll('.chapter');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+  chapters.forEach(c => obs.observe(c));
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  CART SYSTEM                                                     ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+let cart = JSON.parse(localStorage.getItem('vintage_cart') || '[]');
+let selectedLocation = null;
+let orderType = null;
+
+function saveCart() {
+  localStorage.setItem('vintage_cart', JSON.stringify(cart));
+  updateBadge();
+}
+
+function updateBadge() {
+  const badge = document.getElementById('cart-badge');
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  badge.textContent = count;
+  badge.classList.toggle('show', count > 0);
+}
+
+function addToCart(name, price) {
+  const found = cart.find(i => i.name === name);
+  if (found) found.qty++;
+  else cart.push({ name, price, qty: 1 });
+  saveCart();
+  showToast(`✦ ${name} added`);
+  const icon = document.getElementById('cart-icon');
+  icon.classList.add('pulse');
+  setTimeout(() => icon.classList.remove('pulse'), 500);
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveCart();
+  renderCart();
+}
+
+function removeItem(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  renderCart();
+}
+
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  const footer = document.getElementById('cartFooter');
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cart-empty"><div class="icon">📖</div>Your order book is empty<br><em>Add some fine dishes to begin</em></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  let html = '';
+  let total = 0;
+  cart.forEach((item, i) => {
+    const sub = item.price * item.qty;
+    total += sub;
+    html += `
+      <div class="cart-item">
+        <div>
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${RESTAURANT.currency} ${item.price} × ${item.qty} = ${RESTAURANT.currency} ${sub}</div>
+        </div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+          <span class="qty-display">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+          <button class="remove-btn" onclick="removeItem(${i})">✕</button>
+        </div>
+      </div>
+    `;
+  });
+  body.innerHTML = html;
+  footer.style.display = 'block';
+  document.getElementById('cartTotal').textContent = `${RESTAURANT.currency} ${total}`;
+}
+
+function openCart() {
+  document.getElementById('cartModal').classList.add('show');
+  renderCart();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cartModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ORDER FLOW — NEW DUAL SYSTEM                                    ║
+  ║                                                                  ║
+  ║  1. Cart → Proceed                                               ║
+  ║  2. Choose Dine-In OR Delivery                                   ║
+  ║  3. Fill form (different for each)                               ║
+  ║  4. Send WhatsApp                                                ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+function proceedToOrderType() {
+  if (cart.length === 0) { showToast('⚠ Cart is empty'); return; }
+  closeCart();
+  document.getElementById('orderTypeModal').classList.add('show');
+}
+
+function closeOrderType() {
+  document.getElementById('orderTypeModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function backToOrderType() {
+  closeOrderForm();
+  document.getElementById('orderTypeModal').classList.add('show');
+}
+
+function openOrderForm(type) {
+  orderType = type;
+  closeOrderType();
+  document.getElementById('orderFormModal').classList.add('show');
+  
+  const title = document.getElementById('orderFormTitle');
+  const subtitle = document.getElementById('orderFormSubtitle');
+  const body = document.getElementById('orderFormBody');
+  
+  if (type === 'dinein') {
+    title.textContent = '🪑 Dine-In Order';
+    subtitle.textContent = '~ Enjoy at our restaurant ~';
+    body.innerHTML = `
+      <div class="form-group">
+        <label>Your Name *</label>
+        <input type="text" id="fName" placeholder="e.g. Ahmed Khan">
+      </div>
+      <div class="form-group">
+        <label>Table Number *</label>
+        <input type="text" id="fTable" placeholder="e.g. 5">
+      </div>
+      <div class="form-group">
+        <label>Special Instructions</label>
+        <textarea id="fNote" placeholder="e.g. Less spicy please"></textarea>
+      </div>
+    `;
+  } else {
+    title.textContent = '🏠 Home Delivery';
+    subtitle.textContent = '~ We deliver to your doorstep ~';
+    body.innerHTML = `
+      <div class="form-group">
+        <label>Your Name *</label>
+        <input type="text" id="fName" placeholder="e.g. Ali Khan">
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" id="fPhone" placeholder="e.g. 0300-1234567">
+      </div>
+      <div class="form-group">
+        <label>Full Address *</label>
+        <textarea id="fAddress" placeholder="House #, Street, Block, Area, City"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Pin Your Location</label>
+        <button class="map-btn" onclick="openMap()">📍 Choose Location on Map</button>
+        <div class="location-status" id="locationStatus"></div>
+      </div>
+      <div class="form-group">
+        <label>Delivery Instructions</label>
+        <textarea id="fNote" placeholder="e.g. Ring the bell, call on arrival"></textarea>
+      </div>
+    `;
+  }
+  
+  // Update total
+  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  document.getElementById('finalTotal').textContent = `${RESTAURANT.currency} ${total}`;
+}
+
+function closeOrderForm() {
+  document.getElementById('orderFormModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  MAP LOCATION PICKER — OpenStreetMap (FREE!)                     ║
+  ║                                                                  ║
+  ║  Uses Browser Geolocation + OpenStreetMap embed                  ║
+  ║  No API keys needed!                                             ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+function openMap() {
+  document.getElementById('mapModal').classList.add('show');
+  // Default Lahore coordinates
+  loadMap(31.5204, 74.3587);
+}
+
+function closeMap() {
+  document.getElementById('mapModal').classList.remove('show');
+}
+
+function loadMap(lat, lng) {
+  const frame = document.getElementById('mapFrame');
+  const bbox = `${lng-0.01},${lat-0.01},${lng+0.01},${lat+0.01}`;
+  frame.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+  document.getElementById('coordsDisplay').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  selectedLocation = { lat, lng };
+}
+
+function detectLocation() {
+  if (!navigator.geolocation) {
+    showToast('⚠ Geolocation not supported');
+    return;
+  }
+  showToast('📍 Detecting location...');
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      loadMap(pos.coords.latitude, pos.coords.longitude);
+      showToast('✓ Location detected!');
+    },
+    () => {
+      showToast('⚠ Could not detect. Please allow location access.');
+    }
+  );
+}
+
+function confirmLocation() {
+  if (!selectedLocation) {
+    showToast('⚠ Please select a location first');
+    return;
+  }
+  const status = document.getElementById('locationStatus');
+  if (status) {
+    status.textContent = `✓ Location pinned: ${selectedLocation.lat.toFixed(4)}, ${selectedLocation.lng.toFixed(4)}`;
+    status.classList.add('show');
+  }
+  closeMap();
+  showToast('✓ Location confirmed');
+}
+
+/* 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  WHATSAPP ORDER SEND — Two formats (Dine-In / Delivery)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+*/
+function sendWhatsApp() {
+  const name = document.getElementById('fName')?.value.trim();
+  const note = document.getElementById('fNote')?.value.trim();
+  
+  if (!name) { showToast('⚠ Please enter your name'); return; }
+  if (cart.length === 0) { showToast('⚠ Cart is empty'); return; }
+
+  let total = 0;
+  const items = cart.map((i, idx) => {
+    const sub = i.price * i.qty;
+    total += sub;
+    return `${idx + 1}. ${i.name} x ${i.qty} = ${RESTAURANT.currency} ${sub}`;
+  }).join('\n');
+
+  const now = new Date().toLocaleString();
+  let msg = '';
+
+  if (orderType === 'dinein') {
+    const table = document.getElementById('fTable').value.trim();
+    if (!table) { showToast('⚠ Please enter table number'); return; }
+    
+    msg = `🍽️ *NEW DINE-IN ORDER - ${RESTAURANT.name}*
+🪑 Order Type: DINE-IN
+👤 Customer: ${name}
+🪑 Table: ${table}
+⏰ Time: ${now}
+
+📋 *ORDER ITEMS:*
+${items}
+
+💰 *TOTAL: ${RESTAURANT.currency} ${total}*
+💵 Payment: Cash
+📌 Note: ${note || 'None'}
+
+_Sent via ${RESTAURANT.name} Digital Menu_`;
+  } else {
+    const phone = document.getElementById('fPhone').value.trim();
+    const address = document.getElementById('fAddress').value.trim();
+    if (!phone) { showToast('⚠ Please enter phone number'); return; }
+    if (!address) { showToast('⚠ Please enter delivery address'); return; }
+    
+    const mapLink = selectedLocation 
+      ? `https://maps.google.com/?q=${selectedLocation.lat},${selectedLocation.lng}`
+      : 'Not provided';
+    
+    msg = `🍽️ *NEW DELIVERY ORDER - ${RESTAURANT.name}*
+🚗 Order Type: HOME DELIVERY
+👤 Customer: ${name}
+📞 Phone: ${phone}
+🏠 Address: ${address}
+📍 Map: ${mapLink}
+⏰ Time: ${now}
+
+📋 *ORDER ITEMS:*
+${items}
+
+💰 *TOTAL: ${RESTAURANT.currency} ${total}*
+💵 Payment: Cash on Delivery
+📌 Note: ${note || 'None'}
+
+_Sent via ${RESTAURANT.name} Digital Menu_`;
+  }
+
+  const url = `https://wa.me/${RESTAURANT.whatsapp}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+/* Toast */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* Keyboard */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeCart();
+    closeOrderType();
+    closeOrderForm();
+    closeMap();
+  }
+});
+
+/* INIT */
+renderBook();
+updateBadge();
+</script>
+
+</body>
+</html>
